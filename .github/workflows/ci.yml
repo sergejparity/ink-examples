@@ -37,6 +37,10 @@ jobs:
         uses: tj-actions/changed-files@v39
         with:
           dir_names: "true"
+          files_ignore: |
+            .github/**
+            **.gitignore
+            *.md
 
       - name: List all added files
         run: |
