@@ -119,7 +119,8 @@ jobs:
           - macos-latest
         toolchain:
           - stable
-        contract: ["erc721", "psp22-extension"]
+        contract: 
+          ["erc721", "psp22-extension"]
           # ${{ needs.prepare_matrix.outputs.contracts }}
           # - basic-contract-caller
           # - call-runtime
