@@ -67,8 +67,9 @@ jobs:
 
       - name: List changed contracts
         run: |
+          echo "[ " >> ./contracts.txt
           for file in ${{ steps.contracts.outputs.all_changed_files }}; do
-            echo $file >> ./contracts.txt
+            echo '"'$file'", ' >> ./contracts.txt
           done
           echo "Total changed:  ${{ steps.contracts.outputs.all_changed_files_count }};"
           echo ${{ steps.contracts.outputs.all_changed_files }};
@@ -82,8 +83,9 @@ jobs:
       - name: List changed multi and upgradeable contracts
         run: |
           for file in ${{ steps.multi-and-upgradeable.outputs.all_changed_files }}; do
-            echo $file >> contracts.txt
+            echo '"'$file'", ' >> contracts.txt
           done
+          echo " ]" >> contracts.txt
           echo "Total changed:  ${{ steps.multi-and-upgradeable.outputs.all_changed_files_count }};"
           echo ${{ steps.multi-and-upgradeable.outputs.all_changed_files }};
           cat contracts.txt
