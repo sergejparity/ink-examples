@@ -109,6 +109,29 @@ jobs:
           echo "all_changed_files:"
           cat .github/outputs/all_changed_files.json
 
+  display_outputs:
+    name: show
+    needs: prepare_matrix
+    env:
+      CONTRACTS_FROM_JSON: ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+      CONTRACTS: ${{ needs.prepare_matrix.outputs.CONTRACTS }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: SHOW CONTRACTS_FROM_JSON
+        run: |
+          echo "CONTRACTS_FROM_JSON env"
+          echo ${{ env.CONTRACTS_FROM_JSON }}
+          echo "CONTRACTS_FROM_JSON from prepare_matrix"
+          echo ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+
+      - name: SHOW CONTRACTS
+        run: |
+          echo "CONTRACTS env"
+          echo ${{ env.CONTRACTS }}
+          echo "CONTRACTS from prepare_matrix"
+          echo ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS) }}
+
+
   check:
     name: examples
     needs: prepare_matrix
@@ -126,7 +149,8 @@ jobs:
         contract:
           # [erc721, psp22-extension]
           ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
-          # ${{ needs.prepare_matrix.outputs.contracts }}
+          ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+          # ${{ needs.prepare_matrix.outputs.CONTRACTS }}
           # - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
