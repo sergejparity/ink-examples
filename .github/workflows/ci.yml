@@ -28,6 +28,7 @@ jobs:
       CONTRACTS: ${{ steps.contracts_to_process.outputs.contracts }}
       CONTRACTS_JSON: ${{ toJson(steps.contracts.outputs.all_changed_files) }}
       PM_TEST_OUTPUT: "PM_TEST_OUTPUT_VALUE"
+      contracts2: ${{ steps.contracts_to_process.outputs.contracts2 }}
 
     steps:
       - name: Checkout
@@ -100,9 +101,9 @@ jobs:
           # echo 'contracts<<EOF' >> $GITHUB_OUTPUT
           # echo $(cat contracts.txt) >> $GITHUB_OUTPUT
           # echo 'EOF' >> $GITHUB_OUTPUT
-          echo "contracts={\"contracts\":[\"erc721\",\"psp22-extension\"]}" >> $GITHUB_OUTPUT
-          # echo "contracts={\"contracts\":${{ steps.contracts.outputs.all_changed_files }}} >> $GITHUB_OUTPUT
-          echo $contracts
+          echo "contracts2={\"contract\":[\"erc721\",\"psp22-extension\"]}" >> $GITHUB_OUTPUT
+          # echo "contracts2={\"contract\":${{ steps.contracts.outputs.all_changed_files }}} >> $GITHUB_OUTPUT
+          echo $contracts2
 
       - name: Check value written
         run: |
@@ -139,7 +140,7 @@ jobs:
           echo "contracts2 env"
           echo ${{ env.contracts2 }}
           echo "CONTRACTS from prepare_matrix"
-          echo ${{ needs.prepare_matrix.outputs.contracts }}
+          echo ${{ needs.prepare_matrix.outputs.contracts2 }}
 
 
   check:
@@ -152,12 +153,16 @@ jobs:
       OUTPUT_FROM_PM_JOB: "[ ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }} ]"
     strategy:
       matrix:
+
         platform:
           - ubuntu-latest
           - macos-latest
         toolchain:
           - stable
-        contract: ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+
+        ${{ needs.prepare_matrix.outputs.contracts2 }}
+
+        # contract: ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
           # ["erc721","psp22-extension"]
           # [erc721, psp22-extension]
           # ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
