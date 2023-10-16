@@ -120,8 +120,8 @@ jobs:
         toolchain:
           - stable
         contract: 
-          [erc721, psp22-extension]
-          # ${{ needs.prepare_matrix.outputs.contracts }}
+          # [erc721, psp22-extension]
+          ${{ needs.prepare_matrix.outputs.contracts }}
           # - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
