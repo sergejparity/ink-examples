@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       CONTRACTS: ${{ steps.contracts_to_process.outputs.contracts }}
-      CONTRACTS_JSON: ${{ toJson(steps.contracts.outputs.all_changed_files) }}
+      CONTRACTS_JSON: ${{ steps.contracts.outputs.all_changed_files }}
       PM_TEST_OUTPUT: "PM_TEST_OUTPUT_VALUE"
 
     steps:
@@ -137,8 +137,8 @@ jobs:
     needs: prepare_matrix
     env:
       RUST_BACKTRACE: full
-      CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.contracts }}
-      CONTRACTS_FROM_JSON: ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
+      CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.CONTRACTS }}
+      CONTRACTS_FROM_JSON: ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
       OUTPUT_FROM_PM_JOB: "[ ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }} ]"
     strategy:
       matrix:
@@ -190,6 +190,7 @@ jobs:
           echo ${{ needs.prepare_matrix.outputs.contracts }}
           echo "---"
           echo $OUTPUT_FROM_PM_JOB
+          echo ${{ env.CONTRACTS_FROM_JSON }}
 
 
 
