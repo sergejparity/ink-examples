@@ -160,9 +160,9 @@ jobs:
         # toolchain:
         #   - stable
 
-        ${{ needs.prepare_matrix.outputs.contracts2 }}
+        # ${{ needs.prepare_matrix.outputs.contracts2 }}
 
-        # contract: ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+        contract: ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
           # ["erc721","psp22-extension"]
           # [erc721, psp22-extension]
           # ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
