@@ -91,6 +91,10 @@ jobs:
   check:
     name: examples
     needs: prepare_matrix
+    env:
+      RUST_BACKTRACE: full
+      CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.contracts }}
+      OUTPUT_FROM_PM_JOB: ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }}
     strategy:
       matrix:
         platform:
@@ -98,8 +102,7 @@ jobs:
           - macos-latest
         toolchain:
           - stable
-        contract:
-          [$env.contracts_to_process]
+        contract: [ $CONTRACTS_TO_PROCESS ]
           # - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
@@ -129,16 +132,12 @@ jobs:
           # - upgradeable-contracts/set-code-hash
           # - vesting
     runs-on: ${{ matrix.platform }}
-    env:
-      RUST_BACKTRACE: full
-      contracts_to_process: ${{ needs.prepare_matrix.outputs.contracts }}
-      OUTPUT_FROM_PM_JOB: ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }}
     steps:
       - name: Test solution
         run: |
           echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
           echo "--"
-          echo $contracts_to_process
+          echo $CONTRACTS_TO_PROCESS
           echo "---"
           echo $OUTPUT_FROM_PM_JOB
 
