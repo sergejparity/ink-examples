@@ -97,7 +97,7 @@ jobs:
     needs: prepare_matrix
     env:
       RUST_BACKTRACE: full
-      CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.contracts }}
+      CONTRACTS_TO_PROCESS: "[ ${{ needs.prepare_matrix.outputs.contracts }} ]"
       OUTPUT_FROM_PM_JOB: "[ ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }} ]"
     strategy:
       matrix:
@@ -106,8 +106,9 @@ jobs:
           - macos-latest
         toolchain:
           - stable
-        contract: ${{ OUTPUT_FROM_PM_JOB }}
-          # - basic-contract-caller
+        contract: 
+          # ${{ CONTRACTS_TO_PROCESS }}
+          - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
           # - contract-terminate
