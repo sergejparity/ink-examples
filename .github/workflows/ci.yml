@@ -33,22 +33,43 @@ jobs:
           submodules: recursive
 
       - name: Calculate file differences
-        id: changed-files
+        id: contracts
         uses: tj-actions/changed-files@v39
         with:
           dir_names: "true"
-          dir_names_max_depth: 2
+          dir_names_max_depth: 1
           files_ignore: |
             .github/**
             **.gitignore
             *.md
+            upgradable-contracts
 
-      - name: List all added files
+      - name: Calculate file differences
+        id: multi-and-upgradeable
+        uses: tj-actions/changed-files@v39
+        with:
+          dir_names: "true"
+          dir_names_max_depth: 2
+          files: |
+            multi-contract-caller/**
+            upgradable-contracts/**
+          files_ignore: |
+            **.gitignore
+            *.md
+
+      - name: List changed contracts
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.contracts.outputs.all_changed_files }}; do
             echo "- $file"
           done
-          echo "Total changed:  ${{ steps.changed-files.outputs.all_changed_files_count }};"
+          echo "Total changed:  ${{ steps.contracts.outputs.all_changed_files_count }};"
+
+      - name: List changed multi and upgradeable contracts
+        run: |
+          for file in ${{ steps.multi-and-upgradeable.outputs.all_changed_files }}; do
+            echo "- $file"
+          done
+          echo "Total changed:  ${{ steps.multi-and-upgradeable.outputs.all_changed_files_count }};"
 
   # check:
   #   name: examples
