@@ -128,8 +128,8 @@ jobs:
       RUST_BACKTRACE: full
     steps:
       - name: Test solution
-      run: |
-        echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
+        run: |
+          echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
 
 
 
