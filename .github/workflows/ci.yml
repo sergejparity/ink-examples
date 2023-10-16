@@ -85,7 +85,7 @@ jobs:
         run: |
           # echo "contracts_to_process=$(cat contracts.txt)" >> $GITHUB_OUTPUT
           echo 'contracts<<EOF' >> $GITHUB_OUTPUT
-          echo "\[ $(cat contracts.txt) \]" >> $GITHUB_OUTPUT
+          echo $(cat contracts.txt) >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Check value written
@@ -98,7 +98,7 @@ jobs:
     env:
       RUST_BACKTRACE: full
       CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.contracts }}
-      OUTPUT_FROM_PM_JOB: ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }}
+      OUTPUT_FROM_PM_JOB: "[ ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }} ]"
     strategy:
       matrix:
         platform:
@@ -106,7 +106,7 @@ jobs:
           - macos-latest
         toolchain:
           - stable
-        contract: ${{ needs.prepare_matrix.outputs.contracts }}
+        contract: ${{ OUTPUT_FROM_PM_JOB }}
           # - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
