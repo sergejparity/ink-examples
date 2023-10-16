@@ -97,7 +97,7 @@ jobs:
           # echo 'contracts<<EOF' >> $GITHUB_OUTPUT
           # echo $(cat contracts.txt) >> $GITHUB_OUTPUT
           # echo 'EOF' >> $GITHUB_OUTPUT
-          echo "contracts=[\"erc721\", \"psp22-extension\"]" >> $GITHUB_OUTPUT
+          echo "contracts=[erc721, psp22-extension]" >> $GITHUB_OUTPUT
 
       - name: Check value written
         run: |
