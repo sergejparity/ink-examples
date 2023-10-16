@@ -111,8 +111,8 @@ jobs:
   display_outputs:
     name: show
     needs: prepare_matrix
-    env:
-      CONTRACTS_FROM_JSON: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
+    # env:
+    #   CONTRACTS_FROM_JSON: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
     runs-on: ubuntu-latest
     steps:
@@ -121,7 +121,7 @@ jobs:
           echo "CHANGED_CONTRACTS from prepare_matrix"
           echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
           echo "From env:"
-          echo ${{ env.CONTRACTS_FROM_JSON }}
+          # echo ${{ env.CONTRACTS_FROM_JSON }}
 
 
   check:
