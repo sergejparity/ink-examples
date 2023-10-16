@@ -107,7 +107,7 @@ jobs:
         toolchain:
           - stable
         contract: 
-          [${{ CONTRACTS_TO_PROCESS }}]
+          [one, two, three]
           # - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
