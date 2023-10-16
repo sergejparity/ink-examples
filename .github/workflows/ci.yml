@@ -76,7 +76,7 @@ jobs:
           cat contracts.txt
           ls .github/outputs
           echo "all_changed_files:"
-          cat .github/outputs/all_changed_files.json
+          cat .github/outputs/all_changed_files.txt
 
 
       - name: List changed multi and upgradeable contracts
@@ -99,6 +99,8 @@ jobs:
       - name: Check value written
         run: |
           echo ${{ steps.contracts_to_process.outputs.contracts }}
+          echo "all_changed_files:"
+          cat .github/outputs/all_changed_files.txt
 
   check:
     name: examples
