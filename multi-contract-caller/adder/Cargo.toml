@@ -24,3 +24,4 @@ std = [
     "accumulator/std",
 ]
 ink-as-dependency = []
+
