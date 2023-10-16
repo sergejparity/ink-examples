@@ -25,7 +25,8 @@ jobs:
     name: prepare matrix
     runs-on: ubuntu-latest
     outputs:
-      contracts: ${{ steps.contracts_to_process.outputs.contracts_to_process }}
+      contracts: ${{ steps.contracts_to_process.outputs.contracts }}
+      PM_TEST_OUTPUT: "PM_TEST_OUTPUT_VALUE"
 
     steps:
       - name: Checkout
@@ -131,11 +132,15 @@ jobs:
     env:
       RUST_BACKTRACE: full
       contracts_to_process: ${{ needs.prepare_matrix.outputs.contracts }}
+      OUTPUT_FROM_PM_JOB: ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }}
     steps:
       - name: Test solution
         run: |
           echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
+          echo "--"
           echo $contracts_to_process
+          echo "---"
+          echo $OUTPUT_FROM_PM_JOB
 
 
 
