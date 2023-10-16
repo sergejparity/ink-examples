@@ -122,7 +122,7 @@ jobs:
           echo "CONTRACTS_FROM_JSON env"
           echo ${{ env.CONTRACTS_FROM_JSON }}
           echo "CONTRACTS_FROM_JSON from prepare_matrix"
-          echo ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
+          echo ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
 
       - name: SHOW CONTRACTS
         run: |
