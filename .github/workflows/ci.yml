@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 1
           submodules: recursive
 
-      - name: Calculate file differences
+      - name: Diff in simple contracts
         id: contracts
         uses: tj-actions/changed-files@v39
         with:
@@ -42,7 +42,7 @@ jobs:
             .github/**
             **.gitignore
             *.md
-            upgradable-contracts/**
+            upgradeable-contracts/**
 
       - name: Calculate file differences
         id: multi-and-upgradeable
@@ -52,7 +52,7 @@ jobs:
           dir_names_max_depth: 2
           files: |
             multi-contract-caller/**
-            upgradable-contracts/**
+            upgradeable-contracts/**
           files_ignore: |
             **.gitignore
             *.md
