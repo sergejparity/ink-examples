@@ -129,7 +129,7 @@ jobs:
           echo "CONTRACTS env"
           echo ${{ env.CONTRACTS }}
           echo "CONTRACTS from prepare_matrix"
-          echo ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS) }}
+          echo ${{ needs.prepare_matrix.outputs.CONTRACTS }}
 
 
   check:
@@ -148,8 +148,8 @@ jobs:
           - stable
         contract:
           # [erc721, psp22-extension]
-          ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
-          ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+          ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
+          # ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
           # ${{ needs.prepare_matrix.outputs.CONTRACTS }}
           # - basic-contract-caller
           # - call-runtime
