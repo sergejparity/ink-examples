@@ -42,7 +42,7 @@ jobs:
             .github/**
             **.gitignore
             *.md
-            upgradable-contracts
+            upgradable-contracts/**
 
       - name: Calculate file differences
         id: multi-and-upgradeable
