@@ -85,7 +85,7 @@ jobs:
         run: |
           # echo "contracts_to_process=$(cat contracts.txt)" >> $GITHUB_OUTPUT
           echo 'contracts<<EOF' >> $GITHUB_OUTPUT
-          echo $(cat contracts.txt) >> $GITHUB_OUTPUT
+          echo "[ $(cat contracts.txt) ]" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Check value written
