@@ -25,7 +25,7 @@ jobs:
     name: prepare matrix
     runs-on: ubuntu-latest
     outputs:
-      CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.contracts2 }}
+      CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
 
     steps:
       - name: Checkout
@@ -118,9 +118,7 @@ jobs:
     steps:
       - name: SHOW contracts2
         run: |
-          echo "contracts2 env"
-          echo ${{ env.contracts2 }}
-          echo "CONTRACTS from prepare_matrix"
+          echo "CHANGED_CONTRACTS from prepare_matrix"
           echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
 
 
