@@ -67,7 +67,6 @@ jobs:
 
       - name: List changed contracts
         run: |
-          echo "[ " >> ./contracts.txt
           for file in ${{ steps.contracts.outputs.all_changed_files }}; do
             echo '"'$file'", ' >> ./contracts.txt
           done
@@ -76,9 +75,11 @@ jobs:
           echo ${{ steps.contracts.outputs.all_changed_files }};
           echo "contracts.txt content:"
           cat contracts.txt
-          ls .github/outputs
           echo "all_changed_files:"
           cat .github/outputs/all_changed_files.json
+
+      - name: List files produced by changed-files
+        run: ls .github/outputs
 
 
       # - name: List changed multi and upgradeable contracts
@@ -105,7 +106,7 @@ jobs:
         run: |
           echo ${{ steps.contracts_to_process.outputs.contracts }}
           echo "all_changed_files:"
-          cat .github/outputs/all_changed_files.txt
+          cat .github/outputs/all_changed_files.json
 
   check:
     name: examples
