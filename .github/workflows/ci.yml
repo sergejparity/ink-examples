@@ -154,11 +154,11 @@ jobs:
     strategy:
       matrix:
 
-        platform:
-          - ubuntu-latest
-          - macos-latest
-        toolchain:
-          - stable
+        # platform:
+        #   - ubuntu-latest
+        #   - macos-latest
+        # toolchain:
+        #   - stable
 
         ${{ needs.prepare_matrix.outputs.contracts2 }}
 
