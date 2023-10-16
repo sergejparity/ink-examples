@@ -63,7 +63,7 @@ jobs:
       - name: List changed contracts
         run: |
           for file in ${{ steps.contracts.outputs.all_changed_files }}; do
-            echo "$file, " >> ./contracts.txt
+            echo "- $file" >> ./contracts.txt
           done
           echo "Total changed:  ${{ steps.contracts.outputs.all_changed_files_count }};"
           echo ${{ steps.contracts.outputs.all_changed_files }};
@@ -73,7 +73,7 @@ jobs:
       - name: List changed multi and upgradeable contracts
         run: |
           for file in ${{ steps.multi-and-upgradeable.outputs.all_changed_files }}; do
-            echo "$file, " >> contracts.txt
+            echo "- $file" >> contracts.txt
           done
           echo "Total changed:  ${{ steps.multi-and-upgradeable.outputs.all_changed_files_count }};"
           echo ${{ steps.multi-and-upgradeable.outputs.all_changed_files }};
@@ -90,8 +90,6 @@ jobs:
   check:
     name: examples
     needs: prepare_matrix
-    env:
-      contracts_to_process: ${{ needs.prepare_matrix.outputs.contracts_to_process }}
     strategy:
       matrix:
         platform:
@@ -100,7 +98,7 @@ jobs:
         toolchain:
           - stable
         contract:
-          [ $env.contracts_to_process ]
+          ${{ needs.prepare_matrix.outputs.contracts }}
           # - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
