@@ -98,9 +98,9 @@ jobs:
         toolchain:
           - stable
         contract:
-          ${{ needs.prepare_matrix.outputs.contracts }}
-          # - basic-contract-caller
-          # - call-runtime
+          # ${{ needs.prepare_matrix.outputs.contracts }}
+          - basic-contract-caller
+          - call-runtime
           # - conditional-compilation
           # - contract-terminate
           # - custom-allocator
@@ -134,6 +134,7 @@ jobs:
       - name: Test solution
         run: |
           echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
+          echo ${{ needs.prepare_matrix.outputs.contracts }}
 
 
 
