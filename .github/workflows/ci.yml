@@ -88,6 +88,10 @@ jobs:
           echo $(cat contracts.txt) >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
+      - name: Check value written
+        run: |
+          echo ${{ steps.contracts_to_process.outputs.contracts }}
+
   check:
     name: examples
     needs: prepare_matrix
@@ -102,7 +106,7 @@ jobs:
           - macos-latest
         toolchain:
           - stable
-        contract: [ $CONTRACTS_TO_PROCESS ]
+        contract: ${{ needs.prepare_matrix.outputs.contracts }}
           # - basic-contract-caller
           # - call-runtime
           # - conditional-compilation
