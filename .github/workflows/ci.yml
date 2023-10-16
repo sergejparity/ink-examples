@@ -147,8 +147,8 @@ jobs:
           - macos-latest
         toolchain:
           - stable
-        contract:
-          ["erc721","psp22-extension"]
+        contract: ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+          # ["erc721","psp22-extension"]
           # [erc721, psp22-extension]
           # ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
           # ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
