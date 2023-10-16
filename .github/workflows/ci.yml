@@ -64,6 +64,7 @@ jobs:
             echo "- $file"
           done
           echo "Total changed:  ${{ steps.contracts.outputs.all_changed_files_count }};"
+          echo ${{ steps.contracts.outputs.all_changed_files }};
 
       - name: List changed multi and upgradeable contracts
         run: |
@@ -71,6 +72,7 @@ jobs:
             echo "- $file"
           done
           echo "Total changed:  ${{ steps.multi-and-upgradeable.outputs.all_changed_files_count }};"
+          echo ${{ steps.multi-and-upgradeable.outputs.all_changed_files }};
 
   # check:
   #   name: examples
