@@ -148,9 +148,10 @@ jobs:
         toolchain:
           - stable
         contract:
+          ["erc721","psp22-extension"]
           # [erc721, psp22-extension]
           # ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
-          ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+          # ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
           # ${{ needs.prepare_matrix.outputs.CONTRACTS }}
           # - basic-contract-caller
           # - call-runtime
