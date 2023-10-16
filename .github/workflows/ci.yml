@@ -25,7 +25,7 @@ jobs:
     name: prepare matrix
     runs-on: ubuntu-latest
     outputs:
-      CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
+      CHANGED_CONTRACTS: ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
 
     steps:
       - name: Checkout
@@ -112,14 +112,16 @@ jobs:
     name: show
     needs: prepare_matrix
     env:
-      CONTRACTS_FROM_JSON: ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
+      CONTRACTS_FROM_JSON: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
     runs-on: ubuntu-latest
     steps:
-      - name: SHOW contracts2
+      - name: SHOW CHANGED_CONTRACTS
         run: |
           echo "CHANGED_CONTRACTS from prepare_matrix"
           echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
+          echo "From env:"
+          echo ${{ env.CONTRACTS_FROM_JSON }}
 
 
   check:
@@ -127,7 +129,7 @@ jobs:
     needs: prepare_matrix
     env:
       RUST_BACKTRACE: full
-      CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
+      CONTRACTS_TO_PROCESS: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
     strategy:
       matrix:
