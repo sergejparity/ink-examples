@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       CONTRACTS: ${{ steps.contracts_to_process.outputs.contracts }}
-      CONTRACTS_JSON: ${{ steps.contracts.outputs.all_changed_files }}
+      CONTRACTS_JSON: ${{ toJson(steps.contracts.outputs.all_changed_files) }}
       PM_TEST_OUTPUT: "PM_TEST_OUTPUT_VALUE"
 
     steps:
@@ -100,7 +100,8 @@ jobs:
           # echo 'contracts<<EOF' >> $GITHUB_OUTPUT
           # echo $(cat contracts.txt) >> $GITHUB_OUTPUT
           # echo 'EOF' >> $GITHUB_OUTPUT
-          echo "contracts=[erc721, psp22-extension]" >> $GITHUB_OUTPUT
+          echo "contracts={\"contracts\":[\"erc721\",\"psp22-extension\"]}" >> $GITHUB_OUTPUT
+          # echo "contracts={\"contracts\":${{ steps.contracts.outputs.all_changed_files }}} >> $GITHUB_OUTPUT
           echo $contracts
 
       - name: Check value written
@@ -115,6 +116,8 @@ jobs:
     env:
       CONTRACTS_FROM_JSON: ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
       CONTRACTS: ${{ needs.prepare_matrix.outputs.CONTRACTS }}
+      contracts2: ${{ needs.prepare_matrix.outputs.contracts }}
+
     runs-on: ubuntu-latest
     steps:
       - name: SHOW CONTRACTS_FROM_JSON
@@ -130,6 +133,13 @@ jobs:
           echo ${{ env.CONTRACTS }}
           echo "CONTRACTS from prepare_matrix"
           echo ${{ needs.prepare_matrix.outputs.CONTRACTS }}
+
+      - name: SHOW contracts2
+        run: |
+          echo "contracts2 env"
+          echo ${{ env.contracts2 }}
+          echo "CONTRACTS from prepare_matrix"
+          echo ${{ needs.prepare_matrix.outputs.contracts }}
 
 
   check:
