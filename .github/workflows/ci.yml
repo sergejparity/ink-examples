@@ -131,7 +131,6 @@ jobs:
     needs: prepare_matrix
     env:
       RUST_BACKTRACE: full
-      CONTRACTS_TO_PROCESS: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
     strategy:
       matrix:
@@ -144,7 +143,7 @@ jobs:
 
         # ${{ needs.prepare_matrix.outputs.contracts2 }}
 
-        contract: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
+        contract: ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
 
           # ["erc721","psp22-extension"]
           # [erc721, psp22-extension]
