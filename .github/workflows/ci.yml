@@ -24,6 +24,8 @@ jobs:
   prepare_matrix:
     name: prepare matrix
     runs-on: ubuntu-latest
+    outputs:
+      contracts: ${{ steps.contracts_to_process.outputs.contracts_to_process }}
 
     steps:
       - name: Checkout
@@ -42,10 +44,10 @@ jobs:
             .github/**
             **.gitignore
             *.md
-            multi-contract-caller/**/*
+            multi-contract-caller/**
             upgradeable-contracts/**
 
-      - name: Calculate file differences
+      - name: Diff in multi and upgradable contracts
         id: multi-and-upgradeable
         uses: tj-actions/changed-files@v39
         with:
@@ -61,61 +63,76 @@ jobs:
       - name: List changed contracts
         run: |
           for file in ${{ steps.contracts.outputs.all_changed_files }}; do
-            echo "- $file"
+            echo "- $file" >> ./contracts.txt
           done
           echo "Total changed:  ${{ steps.contracts.outputs.all_changed_files_count }};"
           echo ${{ steps.contracts.outputs.all_changed_files }};
+          cat contracts.txt
+
 
       - name: List changed multi and upgradeable contracts
         run: |
           for file in ${{ steps.multi-and-upgradeable.outputs.all_changed_files }}; do
-            echo "- $file"
+            echo "- $file" >> contracts.txt
           done
           echo "Total changed:  ${{ steps.multi-and-upgradeable.outputs.all_changed_files_count }};"
           echo ${{ steps.multi-and-upgradeable.outputs.all_changed_files }};
+          cat contracts.txt
 
-  # check:
-  #   name: examples
-  #   strategy:
-  #     matrix:
-  #       platform:
-  #         - ubuntu-latest
-  #         - macos-latest
-  #       toolchain:
-  #         - stable
-  #       contract:
-  #         - basic-contract-caller
-  #         - call-runtime
-  #         - conditional-compilation
-  #         - contract-terminate
-  #         - custom-allocator
-  #         - custom-environment
-  #         - dns
-  #         - e2e-call-runtime
-  #         - erc20
-  #         - erc721
-  #         - erc1155
-  #         - flipper
-  #         - incrementer
-  #         - multi-contract-caller
-  #         - multi-contract-caller/accumulator
-  #         - multi-contract-caller/adder
-  #         - multi-contract-caller/subber
-  #         - multisig
-  #         - payment-channel
-  #         - psp22-extension
-  #         - rand-extension
-  #         - trait-dyn-cross-contract-calls
-  #         - trait-erc20
-  #         - trait-flipper
-  #         - trait-incrementer
-  #         - upgradeable-contracts/delegator
-  #         - upgradeable-contracts/set-code-hash
-  #         - vesting
-  #   runs-on: ${{ matrix.platform }}
-  #   env:
-  #     RUST_BACKTRACE: full
-  #   steps:
+      - name: Full list for tests
+        id: contracts_to_process
+        run: |
+          echo "contracts_to_process=$(cat contracts.txt)" >> $GITHUB_OUTPUT
+
+  check:
+    name: examples
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        toolchain:
+          - stable
+        contract:
+          ${{ needs.prepare_matrix.outputs.contracts_to_process }}
+          # - basic-contract-caller
+          # - call-runtime
+          # - conditional-compilation
+          # - contract-terminate
+          # - custom-allocator
+          # - custom-environment
+          # - dns
+          # - e2e-call-runtime
+          # - erc20
+          # - erc721
+          # - erc1155
+          # - flipper
+          # - incrementer
+          # - multi-contract-caller
+          # - multi-contract-caller/accumulator
+          # - multi-contract-caller/adder
+          # - multi-contract-caller/subber
+          # - multisig
+          # - payment-channel
+          # - psp22-extension
+          # - rand-extension
+          # - trait-dyn-cross-contract-calls
+          # - trait-erc20
+          # - trait-flipper
+          # - trait-incrementer
+          # - upgradeable-contracts/delegator
+          # - upgradeable-contracts/set-code-hash
+          # - vesting
+    runs-on: ${{ matrix.platform }}
+    env:
+      RUST_BACKTRACE: full
+    steps:
+      - name: Test solution
+      run: |
+        echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
+
+
+
   #     - name: Checkout sources & submodules
   #       uses: actions/checkout@v4
   #       with:
