@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       CONTRACTS: ${{ steps.contracts_to_process.outputs.contracts }}
+      CONTRACTS_JSON: ${{ steps.contracts.outputs.all_changed_files }}
       PM_TEST_OUTPUT: "PM_TEST_OUTPUT_VALUE"
 
     steps:
@@ -123,7 +124,8 @@ jobs:
         toolchain:
           - stable
         contract:
-          [erc721, psp22-extension]
+          # [erc721, psp22-extension]
+          ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
           # ${{ needs.prepare_matrix.outputs.contracts }}
           # - basic-contract-caller
           # - call-runtime
