@@ -47,6 +47,8 @@ jobs:
             *.md
             multi-contract-caller/**
             upgradeable-contracts/**
+          json: true
+          write_output_files: true
 
       - name: Diff in multi and upgradable contracts
         id: multi-and-upgradeable
@@ -60,6 +62,8 @@ jobs:
           files_ignore: |
             **.gitignore
             *.md
+          json: true
+          write_output_files: true
 
       - name: List changed contracts
         run: |
@@ -68,7 +72,9 @@ jobs:
           done
           echo "Total changed:  ${{ steps.contracts.outputs.all_changed_files_count }};"
           echo ${{ steps.contracts.outputs.all_changed_files }};
+          echo "contracts.txt content:"
           cat contracts.txt
+          ls .github/outputs
 
 
       - name: List changed multi and upgradeable contracts
