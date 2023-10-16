@@ -75,6 +75,8 @@ jobs:
           echo "contracts.txt content:"
           cat contracts.txt
           ls .github/outputs
+          echo "all_changed_files:"
+          cat .github/outputs/all_changed_files.json
 
 
       - name: List changed multi and upgradeable contracts
