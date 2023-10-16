@@ -130,11 +130,12 @@ jobs:
     runs-on: ${{ matrix.platform }}
     env:
       RUST_BACKTRACE: full
+      contracts_to_process: ${{ needs.prepare_matrix.outputs.contracts }}
     steps:
       - name: Test solution
         run: |
           echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
-          echo ${{ needs.prepare_matrix.outputs.contracts }}
+          echo $contracts_to_process
 
 
 
