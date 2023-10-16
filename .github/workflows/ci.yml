@@ -99,7 +99,6 @@ jobs:
       RUST_BACKTRACE: full
       CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.contracts }}
       OUTPUT_FROM_PM_JOB: "[ ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }} ]"
-      sample_list: [one, two, three]
     strategy:
       matrix:
         platform:
