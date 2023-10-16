@@ -121,10 +121,7 @@ jobs:
           echo "CHANGED_CONTRACTS from prepare_matrix"
           echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
           echo "fromJson CHANGED_CONTRACTS from prepare_matrix"
-          echo ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
-          echo "From env:"
-          # echo ${{ env.CONTRACTS_FROM_JSON }}
-
+          # echo ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
   check:
     name: examples
@@ -184,11 +181,7 @@ jobs:
         run: |
           echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
           echo "--"
-          echo ${{ needs.prepare_matrix.outputs.contracts }}
-          echo "---"
-          echo $OUTPUT_FROM_PM_JOB
-          echo ${{ env.CONTRACTS_FROM_JSON }}
-
+          echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
 
 
   #     - name: Checkout sources & submodules
