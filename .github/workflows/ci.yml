@@ -25,7 +25,7 @@ jobs:
     name: prepare matrix
     runs-on: ubuntu-latest
     outputs:
-      contracts: ${{ steps.contracts_to_process.outputs.contracts }}
+      CONTRACTS: ${{ steps.contracts_to_process.outputs.contracts }}
       PM_TEST_OUTPUT: "PM_TEST_OUTPUT_VALUE"
 
     steps:
@@ -47,7 +47,7 @@ jobs:
             *.md
             multi-contract-caller/**
             upgradeable-contracts/**
-          # json: true
+          json: true
           write_output_files: true
 
       # - name: Diff in multi and upgradable contracts
@@ -72,12 +72,13 @@ jobs:
             echo '"'$file'", ' >> ./contracts.txt
           done
           echo "Total changed:  ${{ steps.contracts.outputs.all_changed_files_count }};"
+          echo "---"
           echo ${{ steps.contracts.outputs.all_changed_files }};
           echo "contracts.txt content:"
           cat contracts.txt
           ls .github/outputs
           echo "all_changed_files:"
-          cat .github/outputs/all_changed_files.txt
+          cat .github/outputs/all_changed_files.json
 
 
       # - name: List changed multi and upgradeable contracts
@@ -120,7 +121,7 @@ jobs:
           - macos-latest
         toolchain:
           - stable
-        contract: 
+        contract:
           [erc721, psp22-extension]
           # ${{ needs.prepare_matrix.outputs.contracts }}
           # - basic-contract-caller
