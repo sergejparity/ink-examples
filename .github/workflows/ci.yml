@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       CONTRACTS: ${{ steps.contracts_to_process.outputs.contracts }}
-      CONTRACTS_JSON: ${{ steps.contracts.outputs.all_changed_files }}
+      CONTRACTS_JSON: ${{ toJson(steps.contracts.outputs.all_changed_files) }}
       PM_TEST_OUTPUT: "PM_TEST_OUTPUT_VALUE"
 
     steps:
@@ -138,6 +138,7 @@ jobs:
     env:
       RUST_BACKTRACE: full
       CONTRACTS_TO_PROCESS: ${{ needs.prepare_matrix.outputs.contracts }}
+      CONTRACTS_FROM_JSON: ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
       OUTPUT_FROM_PM_JOB: "[ ${{ needs.prepare_matrix.outputs.PM_TEST_OUTPUT }} ]"
     strategy:
       matrix:
@@ -149,7 +150,7 @@ jobs:
         contract:
           # [erc721, psp22-extension]
           ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
-          # ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
+          # ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_FROM_JSON) }}
           # ${{ needs.prepare_matrix.outputs.CONTRACTS }}
           # - basic-contract-caller
           # - call-runtime
