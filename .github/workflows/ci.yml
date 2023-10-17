@@ -105,7 +105,8 @@ jobs:
         run: |
           echo "MATRIX={\"platform\":${{env.platform}},\
                           \"toolchain\":${{env.toolchain}},\
-                          \"contract\":${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}"\
+                          \"contract\":$(echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}/]/, )\
+                          $(echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}/[/)}"\
                           >> $GITHUB_OUTPUT
 
 
