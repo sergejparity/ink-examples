@@ -84,7 +84,7 @@ jobs:
 
       - name: Show resulting matrix
         run: |
-          echo ${{ fromJson(steps.build_matrix.outputs.MATRIX) }} | jq
+          echo ${{ toJson(steps.build_matrix.outputs.MATRIX) }} | jq
 
   check:
     name: examples
