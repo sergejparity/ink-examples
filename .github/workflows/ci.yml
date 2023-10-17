@@ -106,8 +106,8 @@ jobs:
           echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
           echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}
           ALL_CHANGED_CONTRACTS=$(jq -s 'add' \
-                                <(echo "${{ toJson(steps.CHANGED_CONTRACTS.outputs.all_changed_files) }}") \
-                                <(echo "${{ toJson(steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files) }}"))
+                                <(echo "${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}") \
+                                <(echo "${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}"))
 
         # echo $ALL_CHANGED_CONTRACTS
 
