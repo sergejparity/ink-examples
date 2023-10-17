@@ -22,24 +22,22 @@ on:
 
 jobs:
   prepare_matrix:
-    name: prepare matrix
+    name: 
     runs-on: ubuntu-latest
     env:
-      # values for matrix
+      # constant values for matrix
       platform: '[\"ubuntu-latest\", \"macos-latest\"]'
       toolchain: '[\"stable\"]'
     outputs:
       MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
-      CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
           submodules: recursive
 
-      - name: Diff in simple contracts
+      - name: Look for changes in standalone contracts
         id: CHANGED_CONTRACTS
         uses: tj-actions/changed-files@v39
         with:
@@ -54,7 +52,7 @@ jobs:
           json: true
           write_output_files: true
 
-      - name: Diff in multi and upgradable contracts
+      - name: Look for changes in multi and upgradable contracts
         id: CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS
         uses: tj-actions/changed-files@v39
         with:
@@ -69,47 +67,14 @@ jobs:
           json: true
           write_output_files: true
 
-      - name: List changed contracts
-        run: |
-          for file in ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}; do
-            echo $file >> ./contracts.txt
-          done
-          echo "Total changed:  ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files_count }};"
-          echo "---"
-          echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }};
-          echo "contracts.txt content:"
-          cat contracts.txt
-          echo "all_changed_files:"
-          cat .github/outputs/all_changed_files.json
-
-      - name: List files produced by changed-files
-        run: ls .github/outputs
-
-
-      - name: List changed multi and upgradeable contracts
-        run: |
-          echo " ]" >> contracts.txt
-          echo "Total changed:  ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files_count }};"
-          echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }};
-
-      - name: Full list for tests
-        id: contracts_to_process
-        run: |
-          echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
-          echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}
-          echo "CHANGED_CONTRACTS={${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}" >> $GITHUB_OUTPUT
-          echo $CHANGED_CONTRACTS
-
-      - name: Construct Matrix
+      - name: Construct matrix
         id: build_matrix
         run: |
-          echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
-          echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}
           ALL_CHANGED_CONTRACTS=$(jq -s 'add' \
                                 <(echo "${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}") \
                                 <(echo "${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}"))
 
-          echo "$ALL_CHANGED_CONTRACTS"
+          echo "$ALL_CHANGED_CONTRACTS" | jq
 
           echo "MATRIX={\"platform\":${{env.platform}},\
                           \"toolchain\":${{env.toolchain}},\
@@ -117,34 +82,11 @@ jobs:
                           >> $GITHUB_OUTPUT
 
 
-      - name: Check value written
+      - name: Show resulting matrix
         run: |
-          # echo ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
-          echo "all_changed_files:"
-          cat .github/outputs/all_changed_files.json
-          echo
-          echo "----------"
-          echo ${{ steps.build_matrix.outputs.MATRIX }}
+          echo ${{ steps.build_matrix.outputs.MATRIX }} | jq
           echo "JSON"
-          echo ${{ toJson(steps.build_matrix.outputs.MATRIX) }}
-
-  display_outputs:
-    name: show
-    needs: prepare_matrix
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: SHOWCHANGEDCONTRACTS
-        run: |
-          echo "Hey";
-          echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }};
-          echo ${{ toJson(needs.prepare_matrix.outputs.MATRIX) }}
-
-
-
-        # echo ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }};
-        # echo "fromJson CHANGED_CONTRACTS from prepare_matrix";
-
+          echo ${{ toJson(steps.build_matrix.outputs.MATRIX) }} | jq
 
   check:
     name: examples
@@ -155,56 +97,14 @@ jobs:
     strategy:
       matrix:
         ${{ fromJson(needs.prepare_matrix.outputs.MATRIX) }}
-        # platform:
-        #   - ubuntu-latest
-        #   - macos-latest
-        # toolchain:
-        #   - stable
 
-        # # ${{ needs.prepare_matrix.outputs.contracts2 }}
-
-        # contract: ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
-
-          # ["erc721","psp22-extension"]
-          # [erc721, psp22-extension]
-          # ${{ needs.prepare_matrix.outputs.CONTRACTS_JSON }}
-          # ${{ fromJson(needs.prepare_matrix.outputs.CONTRACTS_JSON) }}
-          # ${{ needs.prepare_matrix.outputs.CONTRACTS }}
-          # - basic-contract-caller
-          # - call-runtime
-          # - conditional-compilation
-          # - contract-terminate
-          # - custom-allocator
-          # - custom-environment
-          # - dns
-          # - e2e-call-runtime
-          # - erc20
-          # - erc721
-          # - erc1155
-          # - flipper
-          # - incrementer
-          # - multi-contract-caller
-          # - multi-contract-caller/accumulator
-          # - multi-contract-caller/adder
-          # - multi-contract-caller/subber
-          # - multisig
-          # - payment-channel
-          # - psp22-extension
-          # - rand-extension
-          # - trait-dyn-cross-contract-calls
-          # - trait-erc20
-          # - trait-flipper
-          # - trait-incrementer
-          # - upgradeable-contracts/delegator
-          # - upgradeable-contracts/set-code-hash
-          # - vesting
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Test solution
         run: |
           echo "Processing ${{ matrix.contract }} on ${{ matrix.platform }}"
           echo "--"
-          echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
+          echo ${{ needs.prepare_matrix.outputs.MATRIX }}
 
 
   #     - name: Checkout sources & submodules
