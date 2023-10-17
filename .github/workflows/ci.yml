@@ -24,7 +24,12 @@ jobs:
   prepare_matrix:
     name: prepare matrix
     runs-on: ubuntu-latest
+    env:
+      # values for matrix
+      platform: '"ubuntu-latest", "macos-latest"'
+      toolchain: '"stable"'
     outputs:
+      MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
       CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
       # CHANGED_CONTRACTS: ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
 
@@ -104,11 +109,22 @@ jobs:
           echo "CHANGED_CONTRACTS={${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}" >> $GITHUB_OUTPUT
           echo $CHANGED_CONTRACTS
 
+      - name: Construct Matrix
+        id: build_matrix
+        run: |
+          echo "MATRIX={\"platform\":${{env.platform}},\
+                          "toolchain":${{env.toolchain}}}",\
+                          "contract":${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}\
+                          >> $GITHUB_OUTPUT
+
+
       - name: Check value written
         run: |
           # echo ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
           echo "all_changed_files:"
           cat .github/outputs/all_changed_files.json
+          echo "----------"
+          echo ${{ steps.build_matrix.outputs.MATRIX }}
 
   display_outputs:
     name: show
@@ -120,12 +136,12 @@ jobs:
         run: |
           echo "Hey";
           echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }};
-          
+
 
 
         # echo ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }};
         # echo "fromJson CHANGED_CONTRACTS from prepare_matrix";
-          
+
 
   check:
     name: examples
