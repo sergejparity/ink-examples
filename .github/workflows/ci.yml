@@ -27,7 +27,7 @@ jobs:
     env:
       # values for matrix
       platform: '[\"ubuntu-latest\", \"macos-latest\"]'
-      toolchain: '\"stable\"'
+      toolchain: '[\"stable\"]'
     outputs:
       MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
       CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
@@ -155,7 +155,7 @@ jobs:
 
     strategy:
       matrix:
-        ${{ needs.prepare_matrix.outputs.MATRIX }}
+        ${{ fromJson(needs.prepare_matrix.outputs.MATRIX) }}
         # platform:
         #   - ubuntu-latest
         #   - macos-latest
