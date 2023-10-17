@@ -112,7 +112,7 @@ jobs:
       - name: Construct Matrix
         id: build_matrix
         run: |
-          echo "MATRIX={\"platform\":${{env.platform}},\
+          echo "MATRIX={"platform":${{env.platform}},\
                           "toolchain":${{env.toolchain}}}",\
                           "contract":${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}\
                           >> $GITHUB_OUTPUT
@@ -123,8 +123,11 @@ jobs:
           # echo ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
           echo "all_changed_files:"
           cat .github/outputs/all_changed_files.json
+          echo
           echo "----------"
           echo ${{ steps.build_matrix.outputs.MATRIX }}
+          echo "JSON"
+          echo ${{ toJson(steps.build_matrix.outputs.MATRIX) }}
 
   display_outputs:
     name: show
