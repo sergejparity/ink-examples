@@ -24,7 +24,8 @@ jobs:
   prepare_matrix:
     name: prepare matrix
     runs-on: ubuntu-latest
-    # outputs:
+    outputs:
+      CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
       # CHANGED_CONTRACTS: ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
 
     steps:
@@ -143,7 +144,7 @@ jobs:
 
         # ${{ needs.prepare_matrix.outputs.contracts2 }}
 
-        contract: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
+        ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
           # ["erc721","psp22-extension"]
           # [erc721, psp22-extension]
