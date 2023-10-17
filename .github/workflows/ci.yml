@@ -99,8 +99,8 @@ jobs:
           # echo $(cat contracts.txt) >> $GITHUB_OUTPUT
           # echo 'EOF' >> $GITHUB_OUTPUT
           # echo "CHANGED_CONTRACTS={\"contract\":[\"erc721\",\"psp22-extension\"]}" >> $GITHUB_OUTPUT
-          echo ${{ steps.contracts.outputs.all_changed_files }}
-          echo "CHANGED_CONTRACTS={\"contract\":${{ steps.contracts.outputs.all_changed_files }}}" >> $GITHUB_OUTPUT
+          echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
+          echo "CHANGED_CONTRACTS={\"contract\":${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}" >> $GITHUB_OUTPUT
           echo $CHANGED_CONTRACTS
 
       - name: Check value written
