@@ -117,9 +117,12 @@ jobs:
       - name: SHOWCHANGEDCONTRACTS
         run: |
           echo "Hey";
-          echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }};
-          echo "fromJson CHANGED_CONTRACTS from prepare_matrix";
           echo ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }};
+
+
+        # echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }};
+        # echo "fromJson CHANGED_CONTRACTS from prepare_matrix";
+          
 
   check:
     name: examples
