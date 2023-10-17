@@ -109,11 +109,13 @@ jobs:
                                  <(echo '${{ fromJson(steps.CHANGED_CONTRACTS.outputs.all_changed_files) }}') \
                                  <(echo '${{ fromJson(steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files) }}'))
 
-          echo "MATRIX={\"platform\":${{env.platform}},\
-                          \"toolchain\":${{env.toolchain}},\
-                          \"contract\":$(echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}/]/, )\
-                          $ALL_CHANGED_CONTRACTS}"\
-                          >> $GITHUB_OUTPUT
+          echo $ALL_CHANGED_CONTRACTS
+
+        # echo "MATRIX={\"platform\":${{env.platform}},\
+        #                 \"toolchain\":${{env.toolchain}},\
+        #                 \"contract\":$(echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}/]/, )\
+        #                 $ALL_CHANGED_CONTRACTS}"\
+        #                 >> $GITHUB_OUTPUT
 
 
       - name: Check value written
