@@ -115,8 +115,9 @@ jobs:
     #   CONTRACTS_FROM_JSON: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
     runs-on: ubuntu-latest
+    
     steps:
-      - name: SHOW CHANGED_CONTRACTS
+      - name: SHOW CHANGED CONTRACTS
         run: |
           echo "CHANGED_CONTRACTS from prepare_matrix"
           echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
