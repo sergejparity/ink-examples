@@ -96,6 +96,7 @@ jobs:
         id: contracts_to_process
         run: |
           echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
+          echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}
           echo "CHANGED_CONTRACTS={${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}" >> $GITHUB_OUTPUT
           echo $CHANGED_CONTRACTS
 
