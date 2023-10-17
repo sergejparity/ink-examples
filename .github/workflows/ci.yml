@@ -31,7 +31,6 @@ jobs:
     outputs:
       MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
       CHANGED_CONTRACTS: ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
-      # CHANGED_CONTRACTS: ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
 
     steps:
       - name: Checkout
@@ -55,20 +54,20 @@ jobs:
           json: true
           write_output_files: true
 
-      # - name: Diff in multi and upgradable contracts
-      #   id: multi-and-upgradeable
-      #   uses: tj-actions/changed-files@v39
-      #   with:
-      #     dir_names: "true"
-      #     dir_names_max_depth: 2
-      #     files: |
-      #       multi-contract-caller/**
-      #       upgradeable-contracts/**
-      #     files_ignore: |
-      #       **.gitignore
-      #       *.md
-      #     json: false
-      #     write_output_files: true
+      - name: Diff in multi and upgradable contracts
+        id: CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS
+        uses: tj-actions/changed-files@v39
+        with:
+          dir_names: "true"
+          dir_names_max_depth: 2
+          files: |
+            multi-contract-caller/**
+            upgradeable-contracts/**
+          files_ignore: |
+            **.gitignore
+            *.md
+          json: true
+          write_output_files: true
 
       - name: List changed contracts
         run: |
@@ -87,24 +86,15 @@ jobs:
         run: ls .github/outputs
 
 
-      # - name: List changed multi and upgradeable contracts
-      #   run: |
-      #     for file in ${{ steps.multi-and-upgradeable.outputs.all_changed_files }}; do
-      #       echo '"'$file'", ' >> contracts.txt
-      #     done
-      #     echo " ]" >> contracts.txt
-      #     echo "Total changed:  ${{ steps.multi-and-upgradeable.outputs.all_changed_files_count }};"
-      #     echo ${{ steps.multi-and-upgradeable.outputs.all_changed_files }};
-      #     cat contracts.txt
+      - name: List changed multi and upgradeable contracts
+        run: |
+          echo " ]" >> contracts.txt
+          echo "Total changed:  ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files_count }};"
+          echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }};
 
       - name: Full list for tests
         id: contracts_to_process
         run: |
-          # echo "contracts_to_process=$(cat contracts.txt)" >> $GITHUB_OUTPUT
-          # echo 'contracts<<EOF' >> $GITHUB_OUTPUT
-          # echo $(cat contracts.txt) >> $GITHUB_OUTPUT
-          # echo 'EOF' >> $GITHUB_OUTPUT
-          # echo "CHANGED_CONTRACTS={[\"erc721\",\"psp22-extension\"]}" >> $GITHUB_OUTPUT
           echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
           echo "CHANGED_CONTRACTS={${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}" >> $GITHUB_OUTPUT
           echo $CHANGED_CONTRACTS
