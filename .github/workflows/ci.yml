@@ -24,8 +24,8 @@ jobs:
   prepare_matrix:
     name: prepare matrix
     runs-on: ubuntu-latest
-    outputs:
-      CHANGED_CONTRACTS: ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
+    # outputs:
+      # CHANGED_CONTRACTS: ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
 
     steps:
       - name: Checkout
