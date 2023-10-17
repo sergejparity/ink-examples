@@ -103,9 +103,11 @@ jobs:
       - name: Construct Matrix
         id: build_matrix
         run: |
-          ALL_CHANGED_CONTRACTS=$(jq -s 'add'\
-                                 <(echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }})\
-                                 <(echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}))
+          echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
+          echo ${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}
+          ALL_CHANGED_CONTRACTS=$(jq -s 'add' \
+                                 <(echo ' ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}') \
+                                 <(echo '${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}'))
 
           echo "MATRIX={\"platform\":${{env.platform}},\
                           \"toolchain\":${{env.toolchain}},\
