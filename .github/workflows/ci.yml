@@ -67,7 +67,7 @@ jobs:
       - name: List changed contracts
         run: |
           for file in ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}; do
-            echo '\"'$file'\", ' >> ./contracts.txt
+            echo $file >> ./contracts.txt
           done
           echo "Total changed:  ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files_count }};"
           echo "---"
@@ -104,7 +104,7 @@ jobs:
 
       - name: Check value written
         run: |
-          echo ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
+          # echo ${{ steps.contracts_to_process.outputs.CHANGED_CONTRACTS }}
           echo "all_changed_files:"
           cat .github/outputs/all_changed_files.json
 
@@ -119,7 +119,7 @@ jobs:
           echo "Hey"
           echo ${{ needs.prepare_matrix.outputs.CHANGED_CONTRACTS }}
           echo "fromJson CHANGED_CONTRACTS from prepare_matrix"
-          echo ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
+          # echo ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
   check:
     name: examples
