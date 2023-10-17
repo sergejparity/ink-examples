@@ -99,7 +99,7 @@ jobs:
           # echo 'contracts<<EOF' >> $GITHUB_OUTPUT
           # echo $(cat contracts.txt) >> $GITHUB_OUTPUT
           # echo 'EOF' >> $GITHUB_OUTPUT
-          # echo "CHANGED_CONTRACTS={\"contract\":[\"erc721\",\"psp22-extension\"]}" >> $GITHUB_OUTPUT
+          # echo "CHANGED_CONTRACTS={[\"erc721\",\"psp22-extension\"]}" >> $GITHUB_OUTPUT
           echo ${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}
           echo "CHANGED_CONTRACTS={\"contract\":${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}}" >> $GITHUB_OUTPUT
           echo $CHANGED_CONTRACTS
@@ -144,7 +144,7 @@ jobs:
 
         # ${{ needs.prepare_matrix.outputs.contracts2 }}
 
-        ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
+        contract: ${{ fromJson(needs.prepare_matrix.outputs.CHANGED_CONTRACTS) }}
 
           # ["erc721","psp22-extension"]
           # [erc721, psp22-extension]
