@@ -74,7 +74,7 @@ jobs:
                                 <(echo "${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}"))
 
           echo "ALL_CHANGED_CONTRACTS is -$ALL_CHANGED_CONTRACTS-"
-          if [ $ALL_CHANGED_CONTRACTS = '[]']
+          if [ $ALL_CHANGED_CONTRACTS = "[]" ]
           then
             echo "This is empty"
             export $ALL_CHANGED_CONTRACTS='[empty]'
