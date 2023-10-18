@@ -77,7 +77,7 @@ jobs:
                           \"toolchain\":${{env.toolchain}},\
                           \"contract\":"$ALL_CHANGED_CONTRACTS"}"\
                           >> $GITHUB_OUTPUT
-          if [ -z $ALL_CHANGED_CONTRACTS ] && "SKIP_CHECKS=true" >> $GITHUB_OUTPUT;
+          [ -z $ALL_CHANGED_CONTRACTS ] && echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT;
 
       - name: Show resulting matrix
         run: |
