@@ -73,6 +73,7 @@ jobs:
                                 <(echo "${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}") \
                                 <(echo "${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}"))
 
+          echo "ALL_CHANGED_CONTRACTS is -$ALL_CHANGED_CONTRACTS-"
           if [ -z $ALL_CHANGED_CONTRACTS ]
           then
             echo "This is empty"
