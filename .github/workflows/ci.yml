@@ -77,7 +77,7 @@ jobs:
           if [ $ALL_CHANGED_CONTRACTS = "[]" ]
           then
             echo "This is empty"
-            export $ALL_CHANGED_CONTRACTS='[empty]'
+            # export ALL_CHANGED_CONTRACTS='[empty]'
             echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
           else
             echo "not empty"
