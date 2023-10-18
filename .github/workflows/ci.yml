@@ -152,6 +152,7 @@ jobs:
       - name: Download and run latest `substrate-contracts-node` binary
         if: runner.os == 'Linux'
         run: |
+          echo "SKIP_CHECKS IS ${{ needs.prepare_matrix.outputs.SKIP_CHECKS }}"
           curl -L -o substrate-contracts-node.zip 'https://gitlab.parity.io/parity/mirrors/substrate-contracts-node/-/jobs/artifacts/main/download?job=build-linux' && \
           unzip substrate-contracts-node.zip && \
           chmod +x artifacts/substrate-contracts-node-linux/substrate-contracts-node &&
