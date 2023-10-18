@@ -72,7 +72,15 @@ jobs:
           ALL_CHANGED_CONTRACTS=$(jq -s 'add' \
                                 <(echo "${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}") \
                                 <(echo "${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}"))
-          [ -z $ALL_CHANGED_CONTRACTS ] && export $ALL_CHANGED_CONTRACTS='[empty]' && echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
+
+          if [ -z $ALL_CHANGED_CONTRACTS ]
+          then
+            echo "This is empty"
+            export $ALL_CHANGED_CONTRACTS='[empty]'
+            echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
+          else
+            echo "not empty"
+          fi
 
           echo "MATRIX={\"platform\":${{env.platform}},\
                           \"toolchain\":${{env.toolchain}},\
