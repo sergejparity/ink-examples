@@ -30,7 +30,7 @@ jobs:
       toolchain: '[\"stable\"]'
     outputs:
       MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
-      SKIP_CHECKS: true
+      SKIP_CHECKS: false
 
     steps:
       - name: Checkout
@@ -77,7 +77,7 @@ jobs:
                           \"toolchain\":${{env.toolchain}},\
                           \"contract\":"$ALL_CHANGED_CONTRACTS"}"\
                           >> $GITHUB_OUTPUT
-          echo $ALL_CHANGED_CONTRACTS
+          if [ -z $ALL_CHANGED_CONTRACTS ] && "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
 
       - name: Show resulting matrix
         run: |
@@ -88,6 +88,7 @@ jobs:
   check:
     name: examples
     needs: prepare_matrix
+    if: ${{ fromJson(needs.prepare_matrix.outputs.SKIP_CHECKS) }} == false
     env:
       RUST_BACKTRACE: full
 
