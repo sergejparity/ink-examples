@@ -30,6 +30,7 @@ jobs:
       toolchain: '[\"stable\"]'
     outputs:
       MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
+      SKIP_CHECKS: ${{ steps.build_matrix.outputs.SKIP_CHECKS }}
 
     steps:
       - name: Checkout
@@ -72,6 +73,15 @@ jobs:
                                 <(echo "${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}") \
                                 <(echo "${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}"))
 
+          if [ $ALL_CHANGED_CONTRACTS = "[]" ]
+          then
+            echo "Nothing important changed. Checks job will be skipped."
+            echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
+          else
+            echo "There are changes in following contracts: $ALL_CHANGED_CONTRACTS"
+            echo "SKIP_CHECKS=false" >> $GITHUB_OUTPUT
+          fi
+
           echo "MATRIX={\"platform\":${{env.platform}},\
                           \"toolchain\":${{env.toolchain}},\
                           \"contract\":"$ALL_CHANGED_CONTRACTS"}"\
@@ -85,6 +95,7 @@ jobs:
   check:
     name: examples
     needs: prepare_matrix
+    if: ${{ needs.prepare_matrix.outputs.SKIP_CHECKS  == false }}
     env:
       RUST_BACKTRACE: full
 
