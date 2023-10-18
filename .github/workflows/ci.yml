@@ -30,7 +30,7 @@ jobs:
       toolchain: '[\"stable\"]'
     outputs:
       MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
-      SKIP_CHECKS: false
+      SKIP_CHECKS: ${{ steps.build_matrix.outputs.SKIP_CHECKS }}
 
     steps:
       - name: Checkout
@@ -81,6 +81,7 @@ jobs:
             echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
           else
             echo "not empty"
+            echo "SKIP_CHECKS=false" >> $GITHUB_OUTPUT
           fi
 
           echo "MATRIX={\"platform\":${{env.platform}},\
