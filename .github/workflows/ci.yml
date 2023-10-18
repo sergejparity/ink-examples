@@ -78,6 +78,7 @@ jobs:
                           \"contract\":"$ALL_CHANGED_CONTRACTS"}"\
                           >> $GITHUB_OUTPUT
           [ -z $ALL_CHANGED_CONTRACTS ] && echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
+          exit 0
 
       - name: Show resulting matrix
         run: |
