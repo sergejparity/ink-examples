@@ -73,13 +73,12 @@ jobs:
                                 <(echo "${{ steps.CHANGED_CONTRACTS.outputs.all_changed_files }}") \
                                 <(echo "${{ steps.CHANGED_MULTI_AND_UPGRADEABLE_CONTRACTS.outputs.all_changed_files }}"))
 
-          echo "ALL_CHANGED_CONTRACTS is -$ALL_CHANGED_CONTRACTS-"
           if [ $ALL_CHANGED_CONTRACTS = "[]" ]
           then
-            echo "This is empty"
+            echo "Nothing important changed. Checks job will be skipped."
             echo "SKIP_CHECKS=true" >> $GITHUB_OUTPUT
           else
-            echo "not empty"
+            echo "There are changes in following contracts: $ALL_CHANGED_CONTRACTS"
             echo "SKIP_CHECKS=false" >> $GITHUB_OUTPUT
           fi
 
@@ -92,8 +91,6 @@ jobs:
         run: |
           echo "Following matrix will be used to generate test jobs."
           echo ${{ toJson(steps.build_matrix.outputs.MATRIX) }} | jq
-          echo "SKIP_CHECKS is $SKIP_"
-
 
   check:
     name: examples
@@ -152,7 +149,6 @@ jobs:
       - name: Download and run latest `substrate-contracts-node` binary
         if: runner.os == 'Linux'
         run: |
-          echo "SKIP_CHECKS IS ${{ needs.prepare_matrix.outputs.SKIP_CHECKS }}"
           curl -L -o substrate-contracts-node.zip 'https://gitlab.parity.io/parity/mirrors/substrate-contracts-node/-/jobs/artifacts/main/download?job=build-linux' && \
           unzip substrate-contracts-node.zip && \
           chmod +x artifacts/substrate-contracts-node-linux/substrate-contracts-node &&
