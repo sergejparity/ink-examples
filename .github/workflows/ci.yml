@@ -30,6 +30,7 @@ jobs:
       toolchain: '[\"stable\"]'
     outputs:
       MATRIX: ${{ steps.build_matrix.outputs.MATRIX }}
+      SKIP_CHECKS: true
 
     steps:
       - name: Checkout
@@ -76,11 +77,13 @@ jobs:
                           \"toolchain\":${{env.toolchain}},\
                           \"contract\":"$ALL_CHANGED_CONTRACTS"}"\
                           >> $GITHUB_OUTPUT
+          echo $ALL_CHANGED_CONTRACTS
 
       - name: Show resulting matrix
         run: |
           echo "Following matrix will be used to generate test jobs."
           echo ${{ toJson(steps.build_matrix.outputs.MATRIX) }} | jq
+
 
   check:
     name: examples
