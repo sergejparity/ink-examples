@@ -10,6 +10,7 @@ on:
       - '**.gitignore'
       - '.images/**'
       - '**README.md'
+      - 'LICENSE'
 
   pull_request:
     branches:
@@ -18,6 +19,7 @@ on:
       - '**.gitignore'
       - '.images/**'
       - '**README.md'
+      - 'LICENSE'
 
 
 jobs:
@@ -107,6 +109,13 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2.7.0
+        with:
+          cache-on-failure: true
+          workspaces: ${{ matrix.contract }}
+          key: ${{ matrix.contract }}
+
       - name: Checkout sources & submodules
         uses: actions/checkout@v4
         with:
@@ -122,12 +131,7 @@ jobs:
           components: rust-src
           override: true
 
-      - name: Rust Cache
-        uses: Swatinem/rust-cache@v2.7.0
-        with:
-          cache-on-failure: true
-          workspaces: ${{ matrix.contract }}
-          key: ${{ matrix.contract }}
+
 
       - name: Install `cargo-contract` `main`
         uses: baptiste0928/cargo-install@21a18ba3bf4a184d1804e8b759930d3471b1c941 # v2.2.0
