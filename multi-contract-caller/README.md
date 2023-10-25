@@ -42,3 +42,7 @@ is an easy way to get a local smart contract chain running.
    > Depending on your Substrate version you might encounter [a bug with the pre-filled gas estimation of the UI](https://github.com/paritytech/substrate/issues/8693)
    > and get the error `ExtrinsicFailed: OutOfGas`.
    > As a workaround set the maximum allowed gas manually (e.g. to 5000).
+
+
+
+
